@@ -64,6 +64,7 @@ func Authorize(secret string, opts ...AuthorizeOption) func(http.Handler) http.H
 			token := r.Header.Get("x-sts-token")
 			ctx := r.Context()
 			if ak != "" && token != "" {
+				ctx = context.WithValue(ctx, jwtUserId, ak)
 				next.ServeHTTP(w, r.WithContext(ctx))
 				return
 			}
